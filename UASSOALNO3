@@ -1,0 +1,91 @@
+package Tokopedia;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+public class Product {
+    private String name;
+    private double price;
+    private int stock;
+
+    public Product(String name, double price, int stock) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+    private List<Product> products;
+
+    public Product() {
+        products = new ArrayList<>();
+    }
+
+    public void addProduct(String name, double price, int stock) {
+        Product product = new Product(name, price, stock);
+        products.add(product);
+    }
+
+    public void displayInventory() {
+        for (Product product : products) {
+            System.out.println("Name: " + product.getName() + ", Price: " + product.getPrice() + ", Stock: " + product.getStock());
+        }
+    }
+
+    public void selectionSort() {
+        int n = products.size();
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (products.get(j).getName().compareTo(products.get(minIndex).getName()) < 0) {
+                    minIndex = j;
+                }
+            }
+            Collections.swap(products, i, minIndex);
+        }
+    }
+
+    public List<Product> searchByName(String keyword) {
+        List<Product> foundProducts = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                foundProducts.add(product);
+            }
+        }
+        return foundProducts;
+    }
+
+    public static void main(String[] args) {
+        Product inventory = new Product();
+        Scanner scanner = new Scanner(System.in);
+        inventory.addProduct("Keyboard", 100, 5);
+        inventory.addProduct("Mouse", 50, 10);
+        inventory.addProduct("Monitor", 200, 3);
+        inventory.addProduct("Laptop", 1000, 2);
+        inventory.addProduct("Kabel Usb Type C", 20000, 1);
+
+        System.out.print("Masukkan nama barang yang ingin dicari: ");
+        String searchKeyword = scanner.nextLine();
+
+        List<Product> foundProducts = inventory.searchByName(searchKeyword);
+        if (!foundProducts.isEmpty()) {
+            System.out.println("\nHasil pencarian untuk '" + searchKeyword + "':");
+            for (Product product : foundProducts) {
+                System.out.println("Name: " + product.getName() + ", Price: " + product.getPrice() + ", Stock: " + product.getStock());
+            }
+        } else {
+            System.out.println("Tidak ditemukan produk dengan nama '" + searchKeyword + "'.");
+        }
+    }
+}
